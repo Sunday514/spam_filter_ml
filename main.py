@@ -66,7 +66,7 @@ if __name__ == '__main__':
     for email, _ in test_emails:
         total_cost += attacker.attack(email, 10)
     print('Attack Launched......')
-    print('average cost by attacker = ', total_cost / len(test_emails))
+    print('Average cost by attacker = ', total_cost / len(test_emails))
     _, _, _, base_fnr_after = evaluate(baseline, test_emails)
     print('After attack:')
     print('False negative rate of the baseline NB classifier = ', base_fnr_after)
