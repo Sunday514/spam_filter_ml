@@ -1,9 +1,9 @@
 import os
 import pandas as pd
-from models.nb_classifier import NB
-from models.svm_classifier import SVM
-from adversarial import Attacker, Defender
-from utils import *
+from .models.nb_classifier import NB
+from .models.svm_classifier import SVM
+from .adversarial import Attacker, Defender
+from .utils import *
 
 if __name__ == '__main__':
     # load data

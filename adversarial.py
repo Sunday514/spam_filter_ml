@@ -1,8 +1,5 @@
 import numpy as np
-from models.nb_classifier import NB
-
-import os
-import utils
+from .models.nb_classifier import NB
 
 
 # the adversary that tries to cheat the NB classifier model by adding words
