@@ -4,15 +4,12 @@ import numpy as np
 # Naive Bayes classifier
 class NB:
 
-    def __init__(self, classifier_type, spam_rate=0.5):
+    def __init__(self, classifier_type):
         if classifier_type not in ['Binomial BF', 'Multinomial BF', 'Multinomial TF']:
             raise ValueError('Invalid classifier type.')
         self.classifier_type = classifier_type
         self.spam_prob = {}
         self.ham_prob = {}
-        self.spam_count = 0
-        self.ham_count = 0
-        self.spam_rate = spam_rate
 
     def fit(self, texts, features):
         spam_dict = {}
@@ -41,15 +38,15 @@ class NB:
                         elif self.classifier_type[0] == 'M':
                             ham_dict[word] += word_count[word]
         if self.classifier_type[0] == 'B':
-            self.spam_count = texts_spam + 2
-            self.ham_count = texts_ham + 2
+            spam_count = texts_spam + 2
+            ham_count = texts_ham + 2
         else:
-            self.spam_count = sum(spam_dict.values())
-            self.ham_count = sum(ham_dict.values())
+            spam_count = sum(spam_dict.values())
+            ham_count = sum(ham_dict.values())
         for word in spam_dict:
-            self.spam_prob[word] = spam_dict[word] / self.spam_count
+            self.spam_prob[word] = spam_dict[word] / spam_count
         for word in ham_dict:
-            self.ham_prob[word] = ham_dict[word] / self.ham_count
+            self.ham_prob[word] = ham_dict[word] / ham_count
 
     def predict(self, text):
         # spam_rate is the prior probability that an email is spam, 0.5 by default
@@ -79,6 +76,6 @@ class NB:
                 if word in self.ham_prob:
                     predict_ham += xi * np.log(self.ham_prob[word])
         # return 1 if we classify this email as spam and 0 if not
-        if predict_spam * self.spam_rate > predict_ham * (1 - self.spam_rate):
+        if predict_spam > predict_ham:
             return 1
         return 0
