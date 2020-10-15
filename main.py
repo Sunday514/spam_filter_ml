@@ -1,9 +1,9 @@
 import os
 import pandas as pd
-from .models.nb_classifier import NB
-from .models.svm_classifier import SVM
-from .adversarial import Attacker, Defender
-from .utils import *
+from models.nb_classifier import NB
+from models.svm_classifier import SVM
+from adversarial import Attacker, Defender
+from utils import *
 
 if __name__ == '__main__':
     # load data
@@ -15,7 +15,8 @@ if __name__ == '__main__':
     test_emails = load_emails(os.path.join(base_path, 'part10'))
     # top 10 features
     top_10 = select_feature(train_emails, 10)
-    print('top 10 features:', top_10)
+    print('top 10 features:')
+    print(top_10)
 
     # create naive bayes models
     nb_models = {
@@ -63,10 +64,13 @@ if __name__ == '__main__':
     # attack launched
     attacker = Attacker(baseline)
     total_cost = 0
-    for email, _ in test_emails:
+    total_spam = 0
+    for email, spam in test_emails:
         total_cost += attacker.attack(email, 10)
+        if spam == 1:
+            total_spam += 1
     print('Attack Launched......')
-    print('Average cost by attacker = ', total_cost / len(test_emails))
+    print('Average cost by attacker = ', total_cost / total_spam)
     _, _, _, base_fnr_after = evaluate(baseline, test_emails)
     print('After attack:')
     print('False negative rate of the baseline NB classifier = ', base_fnr_after)
